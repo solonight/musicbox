@@ -15,10 +15,11 @@ class AlbumController extends Controller
      *     @OA\Response(response=200, description="Success")
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $albums = Album::all();
+            $perPage = $request->query('per_page', 30);
+            $albums = Album::paginate($perPage);
             return response()->json($albums, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch albums'], 500);

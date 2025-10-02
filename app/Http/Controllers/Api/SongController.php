@@ -16,10 +16,11 @@ class SongController extends Controller
      *     @OA\Response(response=200, description="Success")
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $songs = Song::all();
+            $perPage = $request->query('per_page', 50);
+            $songs = Song::paginate($perPage);
             return response()->json($songs, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch songs'], 500);

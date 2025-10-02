@@ -16,10 +16,11 @@ class ArtistController extends Controller
      * )
      */
     // List all artists
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $artists = Artist::all();
+            $perPage = $request->query('per_page', 30); // Default 30 items per page
+            $artists = Artist::paginate($perPage);
             return response()->json($artists, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch artists'], 500);
@@ -108,7 +109,7 @@ class ArtistController extends Controller
      *     path="/api/artists/{id}",
      *     tags={"Artists"},
      *     summary="Delete an artist",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\schema(type="integer")),
      *     @OA\Response(response=200, description="Artist deleted"),
      *     @OA\Response(response=404, description="Artist not found")
      * )

@@ -170,6 +170,60 @@
                 }
             }
         },
+        "/api/albums/{id}/songs": {
+            "get": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Get all songs from an album",
+                "operationId": "ea18777f5a550f51c7e4a9e91bc37af2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Album not found"
+                    }
+                }
+            }
+        },
+        "/api/albums/songs/{name}": {
+            "get": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Get all songs from an album by album name",
+                "operationId": "a975b07bd4d54730ed3d352f25ba50b7",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Album not found"
+                    }
+                }
+            }
+        },
         "/api/artists": {
             "get": {
                 "tags": [
@@ -475,6 +529,20 @@
                     },
                     "404": {
                         "description": "Song not found"
+                    }
+                }
+            }
+        },
+        "/api/songs/search": {
+            "get": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Search for songs",
+                "operationId": "b8132c9e660e53506827cc7310491352",
+                "responses": {
+                    "200": {
+                        "description": "Success"
                     }
                 }
             }
