@@ -126,4 +126,30 @@ class SongController extends Controller
             return response()->json(['error' => 'Failed to delete song'], 400);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/songs/search",
+     *     tags={"Songs"},
+     *     summary="Search for songs",
+     *     @OA\Response(response=200, description="Success")
+     * )
+     */
+    public function search(Request $request)
+    {
+        $query = \App\Models\Song::query();
+
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->has('artist')) {
+            $query->whereHas('album.artist', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->artist . '%');
+            });
+        }
+
+        $songs = $query->get();
+        return response()->json($songs, 200);
+    }
 }

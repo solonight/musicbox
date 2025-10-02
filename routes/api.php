@@ -21,6 +21,17 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
 Route::apiResource('artists', ArtistController::class);
 Route::apiResource('albums', AlbumController::class);
-Route::apiResource('songs', SongController::class);
+Route::get('/songs/search', [SongController::class, 'search']);
+Route::apiResource('songs', SongController::class)->where(['song' => '[0-9]+']);
+
+
+// Get artist details with albums
+Route::get('/artists/{id}', [ArtistController::class, 'show']);
+// Get songs by album
+Route::get('/albums/{id}/songs', [AlbumController::class, 'songs']);
+Route::get('/albums/name/{name}/songs', [AlbumController::class, 'songsByName']);
+// Search for songs

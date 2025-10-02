@@ -124,4 +124,42 @@ class AlbumController extends Controller
             return response()->json(['error' => 'Failed to delete album'], 400);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/albums/{id}/songs",tags={"Albums"},
+     *     summary="Get all songs from an album",
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Success"),
+     *     @OA\Response(response=404, description="Album not found")
+     * )
+     */
+    public function songs($id)
+    {
+        try {
+            $album = \App\Models\Album::with('songs')->findOrFail($id);
+            return response()->json($album->songs, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Album not found'], 404);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/albums/songs/{name}",tags={"Albums"},
+     *     summary="Get all songs from an album by album name",
+     *     @OA\Parameter(name="name", in="path", required=true, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Success"),
+     *     @OA\Response(response=404, description="Album not found")
+     * )
+     */
+    public function songsByName($name)
+    {
+        try {
+            $album = \App\Models\Album::where('title', $name)->with('songs')->firstOrFail();
+            return response()->json($album->songs, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Album not found'], 404);
+        }
+    }
 }

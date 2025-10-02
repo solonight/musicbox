@@ -67,7 +67,7 @@ class ArtistController extends Controller
     public function show($id)
     {
         try {
-            $artist = Artist::findOrFail($id);
+            $artist = \App\Models\Artist::with('albums')->findOrFail($id);
             return response()->json($artist, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Artist not found'], 404);
@@ -124,4 +124,6 @@ class ArtistController extends Controller
             return response()->json(['error' => 'Failed to delete artist'], 400);
         }
     }
+
+    
 }

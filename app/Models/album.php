@@ -13,6 +13,11 @@ class Album extends Model
 
     public function songs()
     {
-        return $this->hasMany(Song::class);
+        return $this->hasMany(\App\Models\Song::class);
+    }
+
+    public function artist()
+    {
+        return $this->belongsTo(\App\Models\Artist::class);
     }
 }
